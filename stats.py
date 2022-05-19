@@ -3,6 +3,8 @@
 #Job list (to be used by party)
 JOB_LIST = []
 
+#Euipment list (to be used by party)
+EQUIPMENT_LIST = []
 
 #Convert aptitudes characters to their stats multipliers
 def convert_aptitude(rank):
@@ -153,13 +155,25 @@ class ally():
 		global JOB_LIST
 
 		self.NAME = name
-		self.LEVEL1_BASE_STATS = stats(276, 190, 11, 19, 19, 19, 19, 19, 19, 93, 19, 1, 1)
+		self.STATS = stats(276, 190, 11, 19, 19, 19, 19, 19, 19, 93, 19, 1, 1)
 		self.LEVEL = level()
 		self.ELEMENTAL_RESISTANCE = elemental_resistance(0,0,0,0,0,0,0,0)
 		self.JOB = job
 		self.SUB_JOB = sub_job
-		self.LEVEL1_BASE_STATS.modify_aptitudes(self.JOB.STATS_APTITUDE)
+		self.STATS.modify_aptitudes(self.JOB.STATS_APTITUDE)
 		self.BP = 0
+
+		self.CURRENT_HP = self.STATS.HP
+		self.CURRENT_MP = self.STATS.MP
+
+		self.PASSIVES = []
+
+		self.LEFT_HAND = -1
+		self.RIGHT_HAND = -1
+		self.HEAD = -1
+		self.ARMOR = -1
+		self.ACCESSORY_1 = -1
+		self.ACCESSORY_2 = -1
 
 
 
@@ -210,21 +224,15 @@ class job():
 		self.LEVEL_LUCILLE = level(1,0,100)
 
 
-class aptitude():
-
-	def __init__(self, s = 1.35, a = 1.19, b = 1, c = 0.9, d = 0.8, e = 0.7):
-
-		self.S = 1.35
-		self.A = 1.19
-		self.B = 1
-		self.C = 0.9
-		self.D = 0.8
-		self.E = 0.7
-
+#Display data (this must be in a csv later)
 
 FREELANCER_STATS_APTITUDE = ["C", "C", "C", "C", "C", "C", "C", "C", "C", "C", "C", "C", "C"]
 FREELANCER_WEAPON_ARMOR_APTITUDE = ["C", "C", "C", "C", "C", "C", "C", "B", "C", "C", "C"]
 FREELANCER = job("Freelancer", FREELANCER_STATS_APTITUDE, FREELANCER_WEAPON_ARMOR_APTITUDE)
 
-JOB_LIST.append(FREELANCER)
+WHITE_MAGE_STATS_APTITUDE = ["C", "A", "D", "D", "C", "B", "A", "S", "C", "C", "C", "B", "D"]
+WHITE_MAGE_WEAPON_ARMOR_APTITUDE = ["E", "E", "C", "E", "C", "C", "A", "D", "B", "D", "A"]
+WHITE_MAGE = job("White Mage", WHITE_MAGE_STATS_APTITUDE, WHITE_MAGE_WEAPON_ARMOR_APTITUDE)
 
+JOB_LIST.append(FREELANCER)
+JOB_LIST.append(WHITE_MAGE)
