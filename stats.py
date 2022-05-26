@@ -3,8 +3,8 @@
 #Job list (to be used by party)
 JOB_LIST = []
 
-#Euipment list (to be used by party)
-EQUIPMENT_LIST = []
+#Euip list (to be used by party)
+EQUIP_LIST = []
 
 #Convert aptitudes characters to their stats multipliers
 def convert_aptitude(rank):
@@ -73,7 +73,7 @@ class stats():
 
 
 	#Used to modify BASE_STATS when level up, the other stats change too
-	def modify_by_level(lvl):
+	def modify_by_level(lvl,apt):
 
 		self.BASE_STATS[0] = round(203 + (73*lvl))		#HP
 		self.BASE_STATS[1] = round(184 + (6*lvl))		#MP 
@@ -89,7 +89,7 @@ class stats():
 		self.BASE_STATS[11] = round(1 + (0.14*lvl))		#LUCK
 		self.BASE_STATS[3] = round(1 + (0.14*lvl))		#TGT
 
-		self.modify_stat_aptitudes()
+		self.modify_stat_aptitudes(apt)
 
 
 
@@ -174,6 +174,24 @@ class ally():
 		self.ARMOR = -1
 		self.ACCESSORY_1 = -1
 		self.ACCESSORY_2 = -1
+
+	def change_job(self, job, sub_job):
+
+		self.JOB = job
+		self.SUB_JOB = sub_job
+		self.STATS.modify_aptitudes(JOB_LIST[self.JOB].STATS_APTITUDE)
+
+		if self.CURRENT_MP > self.STATS.MP:
+			self.CURRENT_MP = self.STATS.MP
+		if self.CURRENT_HP > self.STATS.HP:
+			self.CURRENT_HP = self.STATS.HP
+
+	def gain_exp(self, exp):
+
+		xp = self.LEVEL.ACT_LEVEL
+		self.LEVEL.sum_exp(exp)
+		if self.LEVEL.ACT_LEVEL != xp:
+			self.STATS.modify_by_level(self.LEVEL.ACT_LEVEL, JOB_LIST[self.JOB].STATS_APTITUDE)
 
 
 
