@@ -1,4 +1,4 @@
-
+import time
 
 #Job list (to be used by party)
 JOB_LIST = []
@@ -45,35 +45,34 @@ class stats():
 		self.BASE_STATS = [hp, mp, weight, patk, pdef, matk, mdef, mnd, spe, aim, eva, luck, tgt]
 		self.APT = ["B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B", "B"]
 
-	def modify_stat_aptitudes():
+	def modify_stat_aptitudes(self):
 
 		#Modify stats based in aptitudes
-		self.HP = self.BASE_STATS[0] * convert_aptitude(self.APT[0])
-		self.MP = self.BASE_STATS[1] * convert_aptitude(self.APT[1])
-		self.WEIGHT = self.BASE_STATS[2] * convert_aptitude(self.APT[2])
-		self.PATK = self.BASE_STATS[3] * convert_aptitude(self.APT[3])
-		self.PDEF = self.BASE_STATS[4] * convert_aptitude(self.APT[4])
-		self.MATK = self.BASE_STATS[5] * convert_aptitude(self.APT[5])
-		self.MDEF = self.BASE_STATS[6] * convert_aptitude(self.APT[6])
-		self.MND = self.BASE_STATS[7] * convert_aptitude(self.APT[7])
-		self.SPE = self.BASE_STATS[8] * convert_aptitude(self.APT[8])
-		self.AIM = self.BASE_STATS[9] * convert_aptitude(self.APT[9])
-		self.EVA = self.BASE_STATS[10] * convert_aptitude(self.APT[10])
-		self.LUCK = self.BASE_STATS[11] * convert_aptitude(self.APT[11])
-		self.TGT = self.BASE_STATS[12] * convert_aptitude(self.APT[12])
+		self.HP = round(self.BASE_STATS[0] * convert_aptitude(self.APT[0]))
+		self.MP = round(self.BASE_STATS[1] * convert_aptitude(self.APT[1]))
+		self.WEIGHT = round(self.BASE_STATS[2] * convert_aptitude(self.APT[2]))
+		self.PATK = round(self.BASE_STATS[3] * convert_aptitude(self.APT[3]))
+		self.PDEF = round(self.BASE_STATS[4] * convert_aptitude(self.APT[4]))
+		self.MATK = round(self.BASE_STATS[5] * convert_aptitude(self.APT[5]))
+		self.MDEF = round(self.BASE_STATS[6] * convert_aptitude(self.APT[6]))
+		self.MND = round(self.BASE_STATS[7] * convert_aptitude(self.APT[7]))
+		self.SPE = round(self.BASE_STATS[8] * convert_aptitude(self.APT[8]))
+		self.AIM = round(self.BASE_STATS[9] * convert_aptitude(self.APT[9]))
+		self.EVA = round(self.BASE_STATS[10] * convert_aptitude(self.APT[10]))
+		self.LUCK = round(self.BASE_STATS[11] * convert_aptitude(self.APT[11]))
+		self.TGT = round(self.BASE_STATS[12] * convert_aptitude(self.APT[12]))
 
 
 	#Used to change aptitudes (when change job for example), self.APT will change their data and then stats will change
-	def modify_aptitudes(apt):
-
+	def modify_aptitudes(self, apt):
 
 		for i in range(len(apt)):
-			self.APT = apt[i]
+			self.APT[i] = apt[i]
 		self.modify_stat_aptitudes()
 
 
 	#Used to modify BASE_STATS when level up, the other stats change too
-	def modify_by_level(lvl,apt):
+	def modify_by_level(self, lvl,apt):
 
 		self.BASE_STATS[0] = round(203 + (73*lvl))		#HP
 		self.BASE_STATS[1] = round(184 + (6*lvl))		#MP 
@@ -87,9 +86,28 @@ class stats():
 		self.BASE_STATS[9] = round(91 + (2.333*lvl))	#AIM
 		self.BASE_STATS[10] = round(17 + (1.92*lvl))	#EVA
 		self.BASE_STATS[11] = round(1 + (0.14*lvl))		#LUCK
-		self.BASE_STATS[3] = round(1 + (0.14*lvl))		#TGT
+		self.BASE_STATS[12] = round(1 + (0.14*lvl))		#TGT
 
-		self.modify_stat_aptitudes(apt)
+		self.modify_stat_aptitudes()
+
+	def show_stats(self):
+
+		print("STATS: ")
+		print("HP: " + str(self.HP))
+		print("MP: " + str(self.MP))
+		print("WEIGHT: " + str(self.WEIGHT))
+		print("PATK: " + str(self.PATK))
+		print("PDEF: " + str(self.PDEF))
+		print("MATK: " + str(self.MATK))
+		print("MDEF: " + str(self.MDEF))
+		print("MND: " + str(self.MND))
+		print("SPE: " + str(self.SPE))
+		print("AIM: " + str(self.AIM))
+		print("EVA: " + str(self.EVA))
+		print("LUCK: " + str(self.LUCK))
+		print("TGT: " + str(self.TGT))
+		print("\n\n")
+
 
 
 
@@ -129,15 +147,18 @@ class level():
 
 	def sum_exp(self, exp):
 		print("you got " + str(exp) + " points of experience")
+		time.sleep(2)
 		if self.ACT_LEVEL < self.MAX_LEVEL:
 			self.EXP += exp
+			self.TOTAL_EXP += exp
 			self.level_up()
 			print("act exp " +str(self.EXP))
+		print("\n\n")
 
 	def level_up(self): 
-
+		time.sleep(0.5)
 		if self.EXP > self.TO_NEXT_LEVEL:
-			print("you went to level " + str(self.ACT_LEVEL+1))
+			print("you reached level " + str(self.ACT_LEVEL+1))
 			self.ACT_LEVEL += 1
 			self.EXP -= self.TO_NEXT_LEVEL
 
@@ -145,6 +166,8 @@ class level():
 			if self.ACT_LEVEL < self.MAX_LEVEL:
 				print("to next level: " + str(self.TO_NEXT_LEVEL))		
 				self.level_up()
+
+			
 
 
 
@@ -160,7 +183,7 @@ class ally():
 		self.ELEMENTAL_RESISTANCE = elemental_resistance(0,0,0,0,0,0,0,0)
 		self.JOB = job
 		self.SUB_JOB = sub_job
-		self.STATS.modify_aptitudes(self.JOB.STATS_APTITUDE)
+		self.STATS.modify_aptitudes(JOB_LIST[self.JOB].STATS_APTITUDE)
 		self.BP = 0
 
 		self.CURRENT_HP = self.STATS.HP
@@ -192,6 +215,17 @@ class ally():
 		self.LEVEL.sum_exp(exp)
 		if self.LEVEL.ACT_LEVEL != xp:
 			self.STATS.modify_by_level(self.LEVEL.ACT_LEVEL, JOB_LIST[self.JOB].STATS_APTITUDE)
+
+	def show(self):
+
+		print("NAME: " + str(self.NAME) + "\n\n")
+		print("JOB: " + str(JOB_LIST[self.JOB].NAME)) 
+		print("SUB JOB: " + str(JOB_LIST[self.SUB_JOB].NAME) + "\n\n")
+		print("LEVEL: " + str(self.LEVEL.ACT_LEVEL))
+		print("CURRENT EXP: " + str(self.LEVEL.TOTAL_EXP))
+		print("TO NEXT LEVEL: " + str(self.LEVEL.TO_NEXT_LEVEL) + "\n\n")
+		self.STATS.show_stats()
+
 
 
 
@@ -254,3 +288,19 @@ WHITE_MAGE = job("White Mage", WHITE_MAGE_STATS_APTITUDE, WHITE_MAGE_WEAPON_ARMO
 
 JOB_LIST.append(FREELANCER)
 JOB_LIST.append(WHITE_MAGE)
+
+CERA = Cera(1, 0)
+
+print("FIRST LET'S SEE STATS\n\n")
+
+time.sleep(5)
+
+CERA.show()
+
+print("TIME TO EARN EXP")
+time.sleep(5)
+CERA.gain_exp(1000000)
+
+print("NOW LET'S SEE STATS AGAIN")
+time.sleep(5)
+CERA.show()
